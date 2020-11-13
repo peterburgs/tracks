@@ -1,35 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet } from "react-native";
-import { Text, Input, Button } from "react-native-elements";
-import Spacer from "../components/Spacer";
+import { Context as AuthContext } from "../context/AuthContext";
+import AuthForm from "../components/AuthForm";
+import NavLink from "../components/NavLink";
 
 const SignupScreen = ({ navigation }) => {
+  const { state, signup } = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <View style={styles.container}>
-      <Text h2>Before you start</Text>
-      <Spacer />
-      <Input
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        autoCorrect={false}
+      <AuthForm
+        headerText="Sign Up for Tracker"
+        errorMessage={state.errorMessage}
+        submitButtonText="Sign Up"
+        onSubmit={signup}
       />
-      <Input
-        label="Password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-      <Button
-        title="Sign Up"
-        titleStyle={styles.button}
-        containerStyle={{ borderRadius: 10 }}
+      <NavLink
+        routeName="Signin"
+        text="Already have an account? Sign in instead"
       />
     </View>
   );
@@ -41,16 +32,9 @@ SignupScreen.navigationOptions = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    // borderColor: "#cc0e74",
-    // borderRadius: 10,
-    // borderWidth: 5,
+    color: "#2d6187",
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "stretch",
-  },
-  button: {
-    fontSize: 20,
+    alignContent: "center",
   },
 });
 
