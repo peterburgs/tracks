@@ -1,5 +1,12 @@
 import React, { useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { NavigationEvents } from "react-navigation";
 import { Context as AuthContext } from "../context/AuthContext";
 import AuthForm from "../components/AuthForm";
@@ -11,19 +18,25 @@ const SignupScreen = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
-      <NavigationEvents onWillFocus={clearErrorMessage} />
-      <AuthForm
-        headerText="Sign Up for Tracker"
-        errorMessage={state.errorMessage}
-        submitButtonText="Sign Up"
-        onSubmit={signup}
-      />
-      <NavLink
-        routeName="Signin"
-        text="Already have an account? Sign in instead!"
-      />
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <View>
+        <NavigationEvents onWillFocus={clearErrorMessage} />
+        <AuthForm
+          headerText="Sign Up for Tracker"
+          errorMessage={state.errorMessage}
+          submitButtonText="Sign Up"
+          onSubmit={signup}
+        />
+
+        <NavLink
+          routeName="Signin"
+          text="Already have an account? Sign in instead!"
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -37,7 +50,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    marginBottom: 250,
   },
 });
 
