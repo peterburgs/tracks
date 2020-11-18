@@ -1,40 +1,55 @@
-import React, { useState, useContext } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useContext } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { NavigationEvents } from "react-navigation";
 import { Context as AuthContext } from "../context/AuthContext";
 import AuthForm from "../components/AuthForm";
 import NavLink from "../components/NavLink";
 
 const SignupScreen = ({ navigation }) => {
-  const { state, signup } = useContext(AuthContext);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { state, signup, clearErrorMessage } = useContext(
+    AuthContext
+  );
 
   return (
-    <View style={styles.container}>
-      <AuthForm
-        headerText="Sign Up for Tracker"
-        errorMessage={state.errorMessage}
-        submitButtonText="Sign Up"
-        onSubmit={signup}
-      />
-      <NavLink
-        routeName="Signin"
-        text="Already have an account? Sign in instead"
-      />
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <View>
+        <NavigationEvents onWillFocus={clearErrorMessage} />
+        <AuthForm
+          headerText="Sign Up for Tracker"
+          errorMessage={state.errorMessage}
+          submitButtonText="Sign Up"
+          onSubmit={signup}
+        />
+
+        <NavLink
+          routeName="Signin"
+          text="Already have an account? Sign in instead!"
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
+
 SignupScreen.navigationOptions = () => {
   return {
-    headerShown: false,
+    header: () => false,
   };
 };
+
 const styles = StyleSheet.create({
   container: {
-    color: "#2d6187",
     flex: 1,
-    alignContent: "center",
+    justifyContent: "center",
   },
 });
 
